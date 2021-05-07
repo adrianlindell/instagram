@@ -13,6 +13,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     var myRefreshControl = UIRefreshControl()
     
     var posts = [PFObject]()
+    var totalPosts: Int32 = 0
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return posts.count;
@@ -63,18 +64,15 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         let query = PFQuery(className: "Posts")
         //include the pointer to user
         query.includeKey("author")
-        query.limit = 20
+        query.limit = 5
+        query.order(byDescending: "createdAt")
         
         //get query
         query.findObjectsInBackground { (posts, error) in
             if posts != nil {
                 //store data
                 self.posts.removeAll()
-                // insert at beginning to show posts chronologically
-                for post in posts! {
-                    self.posts.insert(post, at: 0)
-                }
-//                self.posts = posts!
+                self.posts = posts!
                 //reload table view
                 self.tableView.reloadData()
                 self.myRefreshControl.endRefreshing()
@@ -82,10 +80,55 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
+    func totalPostsCount() {
+        let query = PFQuery(className:"Posts")
+        query.countObjectsInBackground { (count: Int32, error: Error?) in
+            if let error = error {
+                // The request failed
+                print(error.localizedDescription)
+            } else {
+                self.totalPosts = count;
+            }
+        }
+    }
+    
     func loadMorePosts() {
+        let query = PFQuery(className: "Posts")
+        //include the pointer to user
+        query.includeKey("author")
+        query.order(byDescending: "createdAt")
+        
+        //count available posts and don't load more than available
+        totalPostsCount()
+        let totalCount = Int(self.totalPosts)
+        var limit = totalCount - self.posts.count
+        if !(limit > 0) {
+            return
+        }
+        if (limit > 5) {
+            limit = 5
+        }
+        query.limit = limit
+        
+        query.skip = self.posts.count
+        
+        //get query
+        query.findObjectsInBackground { (posts, error) in
+            if posts != nil {
+                //store data
+                self.posts.append(contentsOf: posts!)
+                //reload table view
+                self.tableView.reloadData()
+            }
+        }
         
     }
     
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row + 1 == posts.count {
+            loadMorePosts()
+        }
+    }
 
     /*
     // MARK: - Navigation
