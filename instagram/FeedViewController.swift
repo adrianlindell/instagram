@@ -6,13 +6,84 @@
 //
 
 import UIKit
+import Parse
+import AlamofireImage
 
-class FeedViewController: UIViewController {
+class FeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    var myRefreshControl = UIRefreshControl()
+    
+    var posts = [PFObject]()
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return posts.count;
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        //grab cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell") as! PostCell
+        
+        //grab PFObject
+        let post = posts[indexPath.row]
+        
+        let user = post["author"] as! PFUser
+        
+        cell.usernameLabel.text = user.username
+        cell.captionLabel.text = post["caption"] as? String
+        
+        let imageFile = post["image"] as! PFFileObject
+        let urlString = imageFile.url!
+        let url = URL(string: urlString)!
+        
+        cell.photoView.af.setImage(withURL: url)
+        
+        return cell
+    }
+    
+    @IBOutlet weak var tableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        myRefreshControl.addTarget(self, action: #selector(loadPosts), for: .valueChanged)
+        
+        tableView.refreshControl = myRefreshControl
 
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        loadPosts()
+    }
+    
+    @objc func loadPosts() {
+        let query = PFQuery(className: "Posts")
+        //include the pointer to user
+        query.includeKey("author")
+        query.limit = 20
+        
+        //get query
+        query.findObjectsInBackground { (posts, error) in
+            if posts != nil {
+                //store data
+                self.posts.removeAll()
+                // insert at beginning to show posts chronologically
+                for post in posts! {
+                    self.posts.insert(post, at: 0)
+                }
+//                self.posts = posts!
+                //reload table view
+                self.tableView.reloadData()
+                self.myRefreshControl.endRefreshing()
+            }
+        }
+    }
+    
+    func loadMorePosts() {
+        
     }
     
 

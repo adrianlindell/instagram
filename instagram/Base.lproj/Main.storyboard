@@ -85,10 +85,63 @@
         <!--Feed View Controller-->
         <scene sceneID="KI6-tr-mnO">
             <objects>
-                <viewController id="vwq-o1-2LE" customClass="FeedViewController" customModule="instagram" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="vwq-o1-2LE" customClass="FeedViewController" customModule="instagram" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="iCG-ae-SmU">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="2Lf-XX-Fw1">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="PostCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PostCell" rowHeight="385" id="WaE-uP-H2h" customClass="PostCell" customModule="instagram" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="385"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="WaE-uP-H2h" id="dJi-qT-S9n">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="385"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gPK-J1-Viu">
+                                                    <rect key="frame" x="8" y="8" width="398" height="338"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="gPK-J1-Viu" secondAttribute="height" multiplier="199:169" id="k7c-5h-nUR"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z2C-fa-ctw">
+                                                    <rect key="frame" x="8" y="354" width="87" height="23"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Caption" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9KV-Kd-6Ep">
+                                                    <rect key="frame" x="103" y="354" width="303" height="21.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="9KV-Kd-6Ep" secondAttribute="bottom" constant="8" id="4Xv-aH-Qz6"/>
+                                                <constraint firstItem="Z2C-fa-ctw" firstAttribute="top" secondItem="gPK-J1-Viu" secondAttribute="bottom" constant="8" id="5Ab-P1-k1N"/>
+                                                <constraint firstItem="9KV-Kd-6Ep" firstAttribute="leading" secondItem="Z2C-fa-ctw" secondAttribute="trailing" constant="8" id="Bh8-C6-nKw"/>
+                                                <constraint firstItem="gPK-J1-Viu" firstAttribute="top" secondItem="dJi-qT-S9n" secondAttribute="top" constant="8" id="HOV-44-oeh"/>
+                                                <constraint firstItem="9KV-Kd-6Ep" firstAttribute="top" secondItem="gPK-J1-Viu" secondAttribute="bottom" constant="8" id="Hfv-3F-iEI"/>
+                                                <constraint firstAttribute="trailing" secondItem="9KV-Kd-6Ep" secondAttribute="trailing" constant="8" id="IYF-Z2-Ls1"/>
+                                                <constraint firstItem="gPK-J1-Viu" firstAttribute="leading" secondItem="dJi-qT-S9n" secondAttribute="leading" constant="8" id="VV1-UK-a6w"/>
+                                                <constraint firstItem="Z2C-fa-ctw" firstAttribute="leading" secondItem="dJi-qT-S9n" secondAttribute="leading" constant="8" id="aCG-DR-knN"/>
+                                                <constraint firstAttribute="trailing" secondItem="gPK-J1-Viu" secondAttribute="trailing" constant="8" id="jsj-9G-soI"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="captionLabel" destination="9KV-Kd-6Ep" id="r6V-U4-0Ci"/>
+                                            <outlet property="photoView" destination="gPK-J1-Viu" id="Gmw-3z-PB4"/>
+                                            <outlet property="usernameLabel" destination="Z2C-fa-ctw" id="YAf-30-lyB"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="5qR-fl-UP3"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
@@ -99,6 +152,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="2Lf-XX-Fw1" id="iO0-tK-ZpF"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2b7-ua-rOD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -107,9 +163,9 @@
         <!--Camera View Controller-->
         <scene sceneID="07l-AA-km3">
             <objects>
-                <viewController id="O7t-3C-HCk" customClass="CameraViewController" customModule="instagram" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="O7t-3C-HCk" customClass="CameraViewController" customModule="instagram" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="haz-QC-2Aq">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="image_placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="M8i-Ag-TyJ">
@@ -155,10 +211,10 @@
         <!--Navigation Controller-->
         <scene sceneID="9Vd-iA-gVf">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="iVS-p5-xwD" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="fullScreen" id="iVS-p5-xwD" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="iw5-V6-91P">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
